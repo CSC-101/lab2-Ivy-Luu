@@ -1,0 +1,42 @@
+from typing import Optional             # gain access to the Optional[X] type hint
+
+
+def checked_access(L:list[int], idx:int) -> Optional[int]:
+    test = idx >= 0 and idx < len(L)    # What is the value of test on each call? test : False(first), True(second)
+    if test:                            # What is this check preventing?  A bad index
+        return L[idx]
+    else:
+        return None
+
+
+first = checked_access([1, 0, 1], 9)     # What is the value of first? First= none
+second = checked_access([1, 0, 1], 2)    # What is the value of second? second = 1
+print()
+def length_sum(L:list[str]) -> int:
+    if len(L) > 2:
+        result = len(L[0]) + len(L[1]) + len(L[2])    # For which call below is this statement evaluated  First call
+    elif len(L) > 1:                                  #   and what are the values being added? first call : 4 + 2 + 3
+        result = len(L[0]) + len(L[1])                # For which call below is this statement evaluated Third call
+    elif len(L) > 0:                                  #   and what are the values being added? Third call: 7 + 4
+        result = len(L[0])                            # For which call below is this statement evaluated  Second Call
+    else:                                             # and what are the values being added? Second call: 11
+        result = 0
+    return result
+
+
+first = length_sum(["this", "is", "the", "first", "call"])
+second = length_sum(["second call"])
+third = length_sum(["another", "call"])
+print()
+def surprising(L:list[str], other:str) -> list[str]:
+    L.append(other.upper())
+    return L
+
+
+words = ["this", "is", "confusing", "code."]
+first = surprising(words, "Avoid")
+second = surprising(words, "such.")
+         # What is the value of words at this point? words = [ 'this', 'is', 'confusing', 'code', 'AVIOD', 'SUCH.']
+         # What are the values of first and second at this point? first = second =  [ 'this', 'is', 'confusing', 'code', 'AVIOD', 'SUCH.']
+         # What happened? The list was changed, so words, first, and second are all the same list now
+print()
